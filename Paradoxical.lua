@@ -189,6 +189,24 @@ local function MatchesSpatialParadoxProfile(unit, auraInstanceID)
 end
 
 ------------------------------------------------------------
+-- TTS Helper
+-- Reads voice + rate from ParadoxicalDB per alert type.
+------------------------------------------------------------
+local function SpeakAlert(alertType)
+    local db = ParadoxicalDB or {}
+    local defaultVoice = C_TTSSettings.GetVoiceOptionID(0) or 0
+    if alertType == "paradox" then
+        local voice = db.paradoxVoice or defaultVoice
+        local rate = db.paradoxRate or 0
+        C_VoiceChat.SpeakText(voice, "paradox", rate, 100, true)
+    elseif alertType == "innervate" then
+        local voice = db.innervateVoice or defaultVoice
+        local rate = db.innervateRate or 0
+        C_VoiceChat.SpeakText(voice, "innervate", rate, 100, true)
+    end
+end
+
+------------------------------------------------------------
 -- Screen Edge Glow
 -- Full-screen vignette using the LowHealth texture, tinted yellow.
 -- Constant while active — no timer or animation changes.
@@ -249,6 +267,7 @@ local function StartTracking(instanceID, durationObj)
     pendingCandidate = nil
 
     glow:Show()
+    SpeakAlert("paradox")
     DebugPrint("Tracking started!")
 
     -- Safety cap: if tracking outlives MAX_DURATION, it's not Spatial Paradox.
@@ -284,6 +303,7 @@ end
 local function StartInnervateTracking()
     innervateActive = true
     innervateGlow:Show()
+    SpeakAlert("innervate")
     DebugPrint(string.format("Innervate tracking started! (%ds timer)", INN.DURATION))
     C_Timer.After(INN.DURATION, function()
         if innervateActive then
@@ -514,6 +534,7 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
             self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
         end
 
+        addonTable.InitSettings()
         self:UnregisterEvent("ADDON_LOADED")
 
     elseif event == "PLAYER_ENTERING_WORLD" then
@@ -567,6 +588,7 @@ SlashCmdList["PARADOXICAL"] = function(msg)
             print("|cff55c0a8[Paradoxical]|r Paradox glow |cffff4444hidden|r")
         else
             glow:Show()
+            SpeakAlert("paradox")
             print("|cff55c0a8[Paradoxical]|r Paradox glow |cffffcc00shown|r")
         end
         return
@@ -576,6 +598,7 @@ SlashCmdList["PARADOXICAL"] = function(msg)
             print("|cff55c0a8[Paradoxical]|r Innervate glow |cffff4444hidden|r")
         else
             innervateGlow:Show()
+            SpeakAlert("innervate")
             print("|cff55c0a8[Paradoxical]|r Innervate glow |cff00ccffshown|r")
         end
         return

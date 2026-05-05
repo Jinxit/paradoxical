@@ -1,11 +1,12 @@
 # Paradoxical
 
-WoW addon for Midnight (12.0.5) that detects Spatial Paradox (Augmentation Evoker) and Innervate on healers, providing a full-screen edge glow indicator.
+WoW addon for Midnight (12.0.5) that detects Spatial Paradox (Augmentation Evoker) and Innervate on healers, providing a full-screen edge glow indicator and TTS voice alerts.
 
 ## Architecture
 
 - **Constants.lua** — Healer spec IDs, Spatial Paradox heuristic parameters, Innervate config
-- **Paradoxical.lua** — All runtime logic: detection, tracking, glow display, slash commands
+- **Paradoxical.lua** — All runtime logic: detection, tracking, glow display, TTS, slash commands
+- **Settings.lua** — TTS voice/rate configuration panel (Interface > AddOns > Paradoxical)
 - **embeds.xml** — Library embedding (LibStub, CallbackHandler, LibEQOL, LibSharedMedia)
 - **Libs/** — Vendored dependencies (gitignored)
 
@@ -43,11 +44,20 @@ Full-screen edge glow using `Interface\FullScreenTextures\LowHealth` (desaturate
 - **Blue** (0.0, 0.82, 1.0) — Innervate
 - Both can be active simultaneously
 
+## TTS Alerts
+
+Uses `C_VoiceChat.SpeakText(voiceID, text, rate, volume, overlap)` (12.0 API) to announce detections:
+- Speaks "paradox" when Spatial Paradox tracking starts
+- Speaks "innervate" when Innervate self-cast detected
+- Also fires on `/paradox test` toggles (on show only)
+- Voice and speech rate configurable per alert type via Settings panel
+- Rate range: -2 (slow) to +6 (fast), volume fixed at 100, overlap enabled
+
 ## Slash Commands
 
 - `/paradox debug` — Toggle debug mode (forces restrictions via CVars, bypasses healer gate, logs all auras)
-- `/paradox test paradox` — Toggle yellow glow
-- `/paradox test innervate` — Toggle blue glow
+- `/paradox test paradox` — Toggle yellow glow (+ TTS on show)
+- `/paradox test innervate` — Toggle blue glow (+ TTS on show)
 
 ## Key Decisions
 

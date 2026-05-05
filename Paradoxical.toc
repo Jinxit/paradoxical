@@ -8,3 +8,4 @@
 embeds.xml
 Constants.lua
 Paradoxical.lua
+Settings.lua
