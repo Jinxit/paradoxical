@@ -1,0 +1,10 @@
+## Interface: 120005
+## Title: Paradoxical
+## Notes: Heuristic tracker for Spatial Paradox (Evoker) on healers
+## Author: Paradoxical
+## Version: 1.0.0
+## SavedVariables: ParadoxicalDB
+
+embeds.xml
+Constants.lua
+Paradoxical.lua
