@@ -19,7 +19,9 @@ addonTable.HEALER_SPEC_IDS = {
 -- Spatial Paradox
 ------------------------------------------------------------
 addonTable.SPATIAL_PARADOX = {
-    SPELL_ID = 406732,
+    -- 406732 is the Evoker's cast spell. 406789 is the 10-second aura
+    -- applied to the healer, which is the one AuraContainer must track.
+    SPELL_ID = 406789,
 }
 
 ------------------------------------------------------------
