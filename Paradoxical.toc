@@ -1,6 +1,6 @@
-## Interface: 120005
+## Interface: 120100
 ## Title: Paradoxical
-## Notes: Heuristic tracker for Spatial Paradox (Evoker) on healers
+## Notes: Spatial Paradox and Innervate tracker for healers
 ## Author: Paradoxical
 ## Version: 1.0.0
 ## SavedVariables: ParadoxicalDB

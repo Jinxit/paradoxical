@@ -16,13 +16,10 @@ addonTable.HEALER_SPEC_IDS = {
 }
 
 ------------------------------------------------------------
--- Spatial Paradox Heuristic Parameters
+-- Spatial Paradox
 ------------------------------------------------------------
 addonTable.SPATIAL_PARADOX = {
-    SPELL_ID = 406732,            -- Direct match (works outside instances, may be secret inside)
-    BASE_DURATION = 10,           -- Base duration in seconds
-    MIN_DURATION = 9.5,           -- Floor: base minus jitter
-    MAX_DURATION = 12.0,          -- Ceiling: base + ~15% mastery + jitter
+    SPELL_ID = 406732,
 }
 
 ------------------------------------------------------------
@@ -30,7 +27,6 @@ addonTable.SPATIAL_PARADOX = {
 ------------------------------------------------------------
 addonTable.INNERVATE = {
     SPELL_ID = 29166,
-    DURATION = 8,
 }
 
 ------------------------------------------------------------
