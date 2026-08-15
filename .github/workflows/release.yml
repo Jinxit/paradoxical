@@ -17,9 +17,9 @@ jobs:
         id: version
         shell: bash
         run: |
-          base=$(grep -oP '^## Version:\s*\K\S+' Paradoxical.toc)
-          hash=$(git rev-parse --short=7 HEAD)
-          full="${base}.${hash}"
+          # A numeric version is required for addon managers to compare this
+          # release with the version installed from an earlier release.
+          full="1.0.${GITHUB_RUN_NUMBER}"
           echo "full=$full" >> "$GITHUB_OUTPUT"
           echo "tag=v$full" >> "$GITHUB_OUTPUT"
 
@@ -27,6 +27,7 @@ jobs:
         run: |
           mkdir -p /tmp/release/Paradoxical
           rsync -a --exclude='.git' --exclude='.github' . /tmp/release/Paradoxical/
+          sed -i "s|^## Version:.*|## Version: ${{ steps.version.outputs.full }}|" /tmp/release/Paradoxical/Paradoxical.toc
           cd /tmp/release
           zip -r "/tmp/Paradoxical-${{ steps.version.outputs.full }}.zip" Paradoxical/
 

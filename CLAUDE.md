@@ -21,3 +21,4 @@ Innervate uses a second AuraContainer and `AddAuraSound` registration for spell 
 | `Constants.lua` | Healer specs and spell IDs |
 | `Paradoxical.lua` | AuraContainer displays and engine-side aura-sound registration |
 | `Settings.lua` | Sound selectors and preview buttons |
+| `.github/workflows/release.yml` | Packages a versioned WoWUp release for every `main` push |
