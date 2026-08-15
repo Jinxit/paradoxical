@@ -1,0 +1,40 @@
+name: Publish to WoWUp
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compose release version
+        id: version
+        shell: bash
+        run: |
+          base=$(grep -oP '^## Version:\s*\K\S+' Paradoxical.toc)
+          hash=$(git rev-parse --short=7 HEAD)
+          full="${base}.${hash}"
+          echo "full=$full" >> "$GITHUB_OUTPUT"
+          echo "tag=v$full" >> "$GITHUB_OUTPUT"
+
+      - name: Package addon
+        run: |
+          mkdir -p /tmp/release/Paradoxical
+          rsync -a --exclude='.git' --exclude='.github' . /tmp/release/Paradoxical/
+          cd /tmp/release
+          zip -r "/tmp/Paradoxical-${{ steps.version.outputs.full }}.zip" Paradoxical/
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.version.outputs.tag }}" \
+            "/tmp/Paradoxical-${{ steps.version.outputs.full }}.zip" \
+            --title "Paradoxical ${{ steps.version.outputs.full }}" \
+            --notes "Automated WoWUp release for commit ${{ github.sha }}."
